@@ -59,3 +59,89 @@ You can directly pull our pre-built environment image to avoid dependency issues
 ```bash
 docker pull [your-dockerhub-username]/[your-repo-name]:latest
 docker run --gpus all -it -v $(pwd):/workspace [your-dockerhub-username]/[your-repo-name]:latest
+```
+
+### Option 2: Conda Environment
+Alternatively, build the environment from scratch:
+```bash
+git clone https://github.com/[your-username]/[your-repo].git
+cd [your-repo]
+
+conda create -n [env_name] python=3.9 -y
+conda activate [env_name]
+
+# Install PyTorch (adjust CUDA version as needed)
+conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+
+# Install specific dependencies
+pip install -r requirements.txt
+```
+
+---
+
+## 🚀 Usage (使用说明示例)
+
+### 1. Data Preparation & Test Samples
+We provide a small test dataset (`./test_samples/`) so you can run the code immediately without downloading massive datasets.
+
+* `./test_samples/sample_input.nii.gz` - A minimal 3D volume for testing.
+* Pre-trained weights can be downloaded from our [Releases page]([Link to releases]). Place them in the `./weights/` folder.
+
+### 2. Running the Demo
+You can run the provided demo scripts to process the test samples.
+
+**Example 1: Basic Inference**
+```bash
+# Run basic inference on the provided test sample
+python inference.py \
+    --input ./test_samples/sample_input.nii.gz \
+    --checkpoint ./weights/model_latest.pth \
+    --output ./results/output_sample.nii.gz
+```
+
+**Example 2: Advanced Processing (e.g., specific tasks)**
+```bash
+# Run specific task (e.g., Z-axis super-resolution)
+bash run_advanced_task.sh --factor 5 --gpu 0
+```
+
+---
+
+## 🗂️ Repository Structure
+
+```text
+.
+├── inference.py           # Main entry point for testing/inference
+├── run_advanced_task.sh   # Shell script for batch execution
+├── models/                # Network architectures (e.g., Unet, Diffusion)
+├── data/                  # Dataloaders and preprocessing scripts
+├── test_samples/          # Small data samples for quick testing
+├── weights/               # Directory to store pre-trained models
+└── requirements.txt       # Python dependencies
+```
+
+---
+
+## 📖 How to cite (引用)
+
+If you find our work or this repository useful, please consider citing our paper:
+
+```bibtex
+@inproceedings{[author_year_keyword],
+  title     = {[Your Paper Title]},
+  author    = {[Author List]},
+  booktitle = {[Conference / Journal Name]},
+  year      = {[Year]},
+  url       = {[Link to paper]},
+}
+```
+
+## 🔐 License
+
+This project is licensed under the Apache License 2.0. See `LICENSE` for details.
+
+## 🙏 Acknowledgements
+
+This repository builds upon several open-source projects. We express our gratitude to:
+- [Reference Repo 1](link)
+- [Reference Repo 2](link)
